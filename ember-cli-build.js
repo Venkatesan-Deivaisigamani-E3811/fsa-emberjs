@@ -145,17 +145,11 @@ function getFeatures(environment) {
     }
   }
 
-  features['ember-glimmer-allow-backtracking-rerender'] = false;
-
-  if (process.env.ALLOW_BACKTRACKING) {
-    features['ember-glimmer-allow-backtracking-rerender'] = true;
-    features['ember-glimmer-detect-backtracking-rerender'] = false;
-  }
-
   var isDevelopment = (environment === 'development');
-
   features['mandatory-setter'] = isDevelopment;
-  features['ember-glimmer-detect-backtracking-rerender'] = isDevelopment;
+
+  features['ember-glimmer-allow-backtracking-rerender'] = false;
+  features['ember-glimmer-detect-backtracking-rerender'] = false;
 
   return features;
 }
