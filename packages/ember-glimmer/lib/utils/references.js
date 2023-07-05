@@ -1,7 +1,4 @@
-import {
-  HAS_NATIVE_WEAKMAP,
-  symbol
-} from 'ember-utils';
+import { symbol } from 'ember-utils';
 import {
   get,
   set,
@@ -10,7 +7,6 @@ import {
   didRender,
   watchKey,
   isFeatureEnabled,
-  runInDebug,
   isProxy
 } from 'ember-metal';
 import {
@@ -287,18 +283,7 @@ export class SimpleHelperReference extends CachedReference {
   static create(helper, args) {
     if (isConst(args)) {
       let { positional, named } = args;
-
-      let positionalValue = positional.value();
-      let namedValue = named.value();
-
-      runInDebug(() => {
-        if (HAS_NATIVE_WEAKMAP) {
-          Object.freeze(positionalValue);
-          Object.freeze(namedValue);
-        }
-      });
-
-      let result = helper(positionalValue, namedValue);
+      let result = helper(positional.value(), named.value());
 
       if (result === null) {
         return NULL_REFERENCE;
@@ -324,18 +309,7 @@ export class SimpleHelperReference extends CachedReference {
 
   compute() {
     let { helper, args: { positional, named } } = this;
-
-    let positionalValue = positional.value();
-    let namedValue = named.value();
-
-    runInDebug(() => {
-      if (HAS_NATIVE_WEAKMAP) {
-        Object.freeze(positionalValue);
-        Object.freeze(namedValue);
-      }
-    });
-
-    return helper(positionalValue, namedValue);
+    return helper(positional.value(), named.value());
   }
 }
 
@@ -356,18 +330,7 @@ export class ClassBasedHelperReference extends CachedReference {
 
   compute() {
     let { instance, args: { positional, named } } = this;
-
-    let positionalValue = positional.value();
-    let namedValue = named.value();
-
-    runInDebug(() => {
-      if (HAS_NATIVE_WEAKMAP) {
-        Object.freeze(positionalValue);
-        Object.freeze(namedValue);
-      }
-    });
-
-    return instance.compute(positionalValue, namedValue);
+    return instance.compute(positional.value(), named.value());
   }
 }
 
