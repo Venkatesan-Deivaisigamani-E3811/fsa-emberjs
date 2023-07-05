@@ -159,15 +159,6 @@ function applyConcatenatedProperties(obj, key, value, values) {
     }
   }
 
-  runInDebug(() => {
-    // it is possible to use concatenatedProperties with strings (which cannot be frozen)
-    // only freeze objects...
-    if (typeof ret === 'object' && ret !== null) {
-      // prevent mutating `concatenatedProperties` array after it is applied
-      Object.freeze(ret);
-    }
-  });
-
   return ret;
 }
 
