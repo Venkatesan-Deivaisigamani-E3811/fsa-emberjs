@@ -40,7 +40,6 @@ export default function Container(registry, options) {
   this.cache           = dictionary(options && options.cache ? options.cache : null);
   this.factoryCache    = dictionary(options && options.factoryCache ? options.factoryCache : null);
   this.factoryManagerCache = dictionary(options && options.factoryManagerCache ? options.factoryManagerCache : null);
-  this.validationCache = dictionary(options && options.validationCache ? options.validationCache : null);
   this._fakeContainerToInject = buildFakeContainerWithDeprecations(this);
   this[CONTAINER_OVERRIDE] = undefined;
   this.isDestroyed = false;
@@ -75,13 +74,6 @@ Container.prototype = {
    @type InheritingDict
    */
   factoryCache: null,
-
-  /**
-   @private
-   @property validationCache
-   @type InheritingDict
-   */
-  validationCache: null,
 
   /**
    Given a fullName return a corresponding instance.
@@ -145,13 +137,6 @@ Container.prototype = {
    */
   lookupFactory(fullName, options) {
     assert('fullName must be a proper full name', this.registry.validateFullName(fullName));
-
-    deprecate(
-      'Using "_lookupFactory" is deprecated. Please use container.factoryFor instead.',
-      !isFeatureEnabled('ember-factory-for'),
-      { id: 'container-lookupFactory', until: '2.13.0', url: 'http://emberjs.com/deprecations/v2.x/#toc_migrating-from-_lookupfactory-to-factoryfor' }
-    );
-
     return deprecatedFactoryFor(this, this.registry.normalize(fullName), options);
   },
 
@@ -496,7 +481,7 @@ function injectionsFor(container, fullName) {
 }
 
 function instantiate(factory, props, container, fullName) {
-  let lazyInjections, validationCache;
+  let lazyInjections;
 
   props = props || {};
 
@@ -509,20 +494,6 @@ function instantiate(factory, props, container, fullName) {
       throw new Error(`Failed to create an instance of '${fullName}'. Most likely an improperly defined class or` +
                       ` an invalid module export.`);
     }
-
-    validationCache = container.validationCache;
-
-    runInDebug(() => {
-      // Ensure that all lazy injections are valid at instantiation time
-      if (!validationCache[fullName] && typeof factory._lazyInjections === 'function') {
-        lazyInjections = factory._lazyInjections();
-        lazyInjections = container.registry.normalizeInjectionsHash(lazyInjections);
-
-        container.registry.validateInjections(lazyInjections);
-      }
-    });
-
-    validationCache[fullName] = true;
 
     let obj;
 
@@ -689,20 +660,6 @@ class FactoryManager {
     let props = assign({}, injections, options);
 
     props[NAME_KEY] = this.madeToString || (this.madeToString = this.container.registry.makeToString(this.class, this.fullName));
-
-    runInDebug(() => {
-      let lazyInjections;
-      let validationCache = this.container.validationCache;
-      // Ensure that all lazy injections are valid at instantiation time
-      if (!validationCache[this.fullName] && this.class && typeof this.class._lazyInjections === 'function') {
-        lazyInjections = this.class._lazyInjections();
-        lazyInjections = this.container.registry.normalizeInjectionsHash(lazyInjections);
-
-        this.container.registry.validateInjections(lazyInjections);
-      }
-
-      validationCache[this.fullName] = true;
-    });
 
     if (!this.class.create) {
       throw new Error(`Failed to create an instance of '${this.normalizedName}'. Most likely an improperly defined class or` +
