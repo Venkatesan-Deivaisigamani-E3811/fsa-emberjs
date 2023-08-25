@@ -6,7 +6,7 @@
  *            Portions Copyright 2008-2011 Apple Inc. All rights reserved.
  * @license   Licensed under MIT license
  *            See https://raw.github.com/emberjs/ember.js/master/LICENSE
- * @version   2.12.2
+ * @version   2.12.2-Ignore-Backtracking-Renderer-2.12.2+8d6b3969
  */
 
 var enifed, requireModule, Ember;
@@ -6786,16 +6786,16 @@ enifed('ember-dev/test-helper/assertion', ['exports', 'ember-dev/test-helper/uti
   /**
     This assertion class is used to test assertions made using Ember.assert.
     It injects two helpers onto `window`:
-
+  
     - expectAssertion(func: Function, [expectedMessage: String | RegExp])
-
+  
     This function calls `func` and asserts that `Ember.assert` is invoked during
     the execution. Moreover, it takes a String or a RegExp as a second optional
     argument that can be used to test if a specific assertion message was
     generated.
-
+  
     - ignoreAssertion(func: Function)
-
+  
     This function calls `func` and disables `Ember.assert` during the execution.
     In particular, this prevents `Ember.assert` from throw errors that would
     disrupt the control flow.
@@ -36025,7 +36025,7 @@ enifed('ember-glimmer/tests/utils/shared-conditional-tests', ['exports', 'ember-
 
     /*
       The test cases in this file generally follow the following pattern:
-
+    
       1. Render with [ truthy, ...(other truthy variations), falsy, ...(other falsy variations) ]
       2. No-op rerender
       3. Make all of them falsy (through interior mutation)
@@ -52468,9 +52468,9 @@ enifed('ember-runtime/tests/legacy_1x/mixins/observable/chained_test', ['exports
     NOTE: This test is adapted from the 1.x series of unit tests.  The tests
     are the same except for places where we intend to break the API we instead
     validate that we warn the developer appropriately.
-
+  
     CHANGES FROM 1.6:
-
+  
     * changed obj.set() and obj.get() to Ember.set() and Ember.get()
     * changed obj.addObserver() to addObserver()
   */
@@ -52537,9 +52537,9 @@ enifed('ember-runtime/tests/legacy_1x/mixins/observable/observable_test', ['expo
     NOTE: This test is adapted from the 1.x series of unit tests.  The tests
     are the same except for places where we intend to break the API we instead
     validate that we warn the developer appropriately.
-
+  
     CHANGES FROM 1.6:
-
+  
     * Added ObservableObject which applies the Ember.Observable mixin.
     * Changed reference to Ember.T_FUNCTION to 'function'
     * Changed all references to sc_super to this._super(...arguments)
@@ -52552,7 +52552,7 @@ enifed('ember-runtime/tests/legacy_1x/mixins/observable/observable_test', ['expo
     * Changed calls to Ember.Binding.flushPendingChanges() -> run.sync()
     * removed test in observer around line 862 that expected key/value to be
       the last item in the chained path.  Should be root and chained path
-
+  
   */
 
   // ========================================================================
@@ -53444,9 +53444,9 @@ enifed('ember-runtime/tests/legacy_1x/mixins/observable/observersForKey_test', [
     NOTE: This test is adapted from the 1.x series of unit tests.  The tests
     are the same except for places where we intend to break the API we instead
     validate that we warn the developer appropriately.
-
+  
     CHANGES FROM 1.6:
-
+  
     * Create ObservableObject which includes Ember.Observable
   */
 
@@ -53496,9 +53496,9 @@ enifed('ember-runtime/tests/legacy_1x/mixins/observable/propertyChanges_test', [
     NOTE: This test is adapted from the 1.x series of unit tests.  The tests
     are the same except for places where we intend to break the API we instead
     validate that we warn the developer appropriately.
-
+  
     CHANGES FROM 1.6:
-
+  
     * Create ObservableObject which includes Ember.Observable
     * Remove test that tests internal _kvo_changeLevel property.  This is an
       implementation detail.
@@ -53645,32 +53645,32 @@ enifed('ember-runtime/tests/legacy_1x/system/binding_test', ['exports', 'ember-e
     NOTE: This test is adapted from the 1.x series of unit tests.  The tests
     are the same except for places where we intend to break the API we instead
     validate that we warn the developer appropriately.
-
+  
     CHANGES FROM 1.6:
-
+  
     * All calls to run.sync() were changed to
       run.sync()
-
+  
     * Bindings no longer accept a root object as their second param.  Instead
       our test binding objects were put under a single object they could
       originate from.
-
+  
     * tests that inspected internal properties were removed.
-
+  
     * converted foo.get/foo.set to use get/Ember.set
-
+  
     * Removed tests for Binding.isConnected.  Since binding instances are now
       shared this property no longer makes sense.
-
+  
     * Changed call calls for obj.bind(...) to bind(obj, ...);
-
+  
     * Changed all calls to sc_super() to this._super(...arguments)
-
+  
     * Changed all calls to disconnect() to pass the root object.
-
+  
     * removed calls to Binding.destroy() as that method is no longer useful
       (or defined)
-
+  
     * changed use of T_STRING to 'string'
   */
 
@@ -53962,9 +53962,9 @@ enifed('ember-runtime/tests/legacy_1x/system/object/base_test', ['exports', 'emb
     NOTE: This test is adapted from the 1.x series of unit tests.  The tests
     are the same except for places where we intend to break the API we instead
     validate that we warn the developer appropriately.
-
+  
     CHANGES FROM 1.6:
-
+  
     * Changed get(obj, ) and set(obj, ) to Ember.get() and Ember.set()
     * Removed obj.instanceOf() and obj.kindOf() tests.  use obj instanceof Foo
       instead
@@ -54066,9 +54066,9 @@ enifed('ember-runtime/tests/legacy_1x/system/object/bindings_test', ['exports', 
     NOTE: This test is adapted from the 1.x series of unit tests.  The tests
     are the same except for places where we intend to break the API we instead
     validate that we warn the developer appropriately.
-
+  
     CHANGES FROM 1.6:
-
+  
     * changed Ember.Bending.flushPendingChanges() -> run.sync();
     * changes obj.set() and obj.get() to Ember.set() and Ember.get()
     * Fixed an actual bug in unit tests around line 133
@@ -54244,9 +54244,9 @@ enifed('ember-runtime/tests/legacy_1x/system/object/concatenated_test', ['export
     NOTE: This test is adapted from the 1.x series of unit tests.  The tests
     are the same except for places where we intend to break the API we instead
     validate that we warn the developer appropriately.
-
+  
     CHANGES FROM 1.6:
-
+  
     * changed get(obj, ) and set(obj, ) to Ember.get() and Ember.set()
     * converted uses of obj.isEqual() to use deepEqual() test since isEqual is not
       always defined
@@ -54357,12 +54357,12 @@ enifed('ember-runtime/tests/legacy_1x/system/run_loop_test', ['exports', 'ember-
     NOTE: This test is adapted from the 1.x series of unit tests.  The tests
     are the same except for places where we intend to break the API we instead
     validate that we warn the developer appropriately.
-
+  
     CHANGES FROM 1.6:
-
+  
     * Updated the API usage for setting up and syncing Binding since these
       are not the APIs this file is testing.
-
+  
     * Disabled a call to invokeOnce() around line 127 because it appeared to be
       broken anyway.  I don't think it ever even worked.
   */
@@ -59801,27 +59801,27 @@ enifed('ember-runtime/tests/suites/suite', ['exports', 'ember-utils', 'ember-run
     work against a mixin or plugin API.  Developers implementing objects that
     use the mixin or support the API can then run these tests against their
     own code to verify compliance.
-
+  
     To define a suite, you need to define the tests themselves as well as a
     callback API implementers can use to tie your tests to their specific class.
-
+  
     ## Defining a Callback API
-
+  
     To define the callback API, just extend this class and add your properties
     or methods that must be provided.
-
+  
     ## Defining Unit Tests
-
+  
     To add unit tests, use the suite.module() or suite.test() methods instead
     of a regular module() or test() method when defining your tests.  This will
     add the tests to the suite.
-
+  
     ## Using a Suite
-
+  
     To use a Suite to test your own objects, extend the suite subclass and
     define any required methods.  Then call run() on the new subclass.  This
     will create an instance of your class and then defining the unit tests.
-
+  
     @extends Ember.Object
     @private
   */
@@ -71543,9 +71543,9 @@ enifed('ember/tests/routing/basic_test', ['exports', 'ember-utils', 'ember-conso
       this.route("home", { path: "/" });
       this.route("special", { path: "/specials/:menu_item_id" });
     });
-
+  
     let menuItem;
-
+  
     App.MenuItem = Ember.Object.extend();
     App.MenuItem.reopenClass({
       find: function(id) {
@@ -71554,7 +71554,7 @@ enifed('ember/tests/routing/basic_test', ['exports', 'ember-utils', 'ember-conso
         return menuItem;
       }
     });
-
+  
     App.SpecialRoute = Route.extend({
       setup: function() {
         throw 'Setup error';
@@ -71566,9 +71566,9 @@ enifed('ember/tests/routing/basic_test', ['exports', 'ember-utils', 'ember-conso
         }
       }
     });
-
+  
     bootApplication();
-
+  
     handleURLRejectsWith('/specials/1', 'Setup error');
   });
   */

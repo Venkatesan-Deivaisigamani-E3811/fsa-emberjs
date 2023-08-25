@@ -6,7 +6,7 @@
  *            Portions Copyright 2008-2011 Apple Inc. All rights reserved.
  * @license   Licensed under MIT license
  *            See https://raw.github.com/emberjs/ember.js/master/LICENSE
- * @version   2.12.2
+ * @version   2.12.2-Ignore-Backtracking-Renderer-2.12.2+8d6b3969
  */
 
 var enifed, requireModule, Ember;
@@ -1198,6 +1198,7 @@ exports['default'] = Backburner;
 Object.defineProperty(exports, '__esModule', { value: true });
 
 });
+
 enifed('ember-console/index', ['exports', 'ember-environment'], function (exports, _emberEnvironment) {
   'use strict';
 
@@ -6794,15 +6795,6 @@ enifed('ember-metal/mixin', ['exports', 'ember-utils', 'ember-metal/error', 'emb
       }
     }
 
-    _emberMetalDebug.runInDebug(function () {
-      // it is possible to use concatenatedProperties with strings (which cannot be frozen)
-      // only freeze objects...
-      if (typeof ret === 'object' && ret !== null) {
-        // prevent mutating `concatenatedProperties` array after it is applied
-        Object.freeze(ret);
-      }
-    });
-
     return ret;
   }
 
@@ -12123,7 +12115,7 @@ enifed("ember/features", ["exports"], function (exports) {
 enifed("ember/version", ["exports"], function (exports) {
   "use strict";
 
-  exports.default = "2.12.2";
+  exports.default = "2.12.2-Ignore-Backtracking-Renderer-2.12.2+8d6b3969";
 });
 enifed("glimmer-compiler/index", ["exports", "glimmer-compiler/lib/compiler", "glimmer-compiler/lib/template-visitor"], function (exports, _glimmerCompilerLibCompiler, _glimmerCompilerLibTemplateVisitor) {
   "use strict";
@@ -26672,13 +26664,28 @@ enifed('handlebars/exception', ['exports'], function (exports) {
       this[errorProps[idx]] = tmp[errorProps[idx]];
     }
 
+    /* istanbul ignore else */
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, Exception);
     }
 
-    if (loc) {
-      this.lineNumber = line;
-      this.column = column;
+    try {
+      if (loc) {
+        this.lineNumber = line;
+
+        // Work around issue under safari where we can't directly set the column value
+        /* istanbul ignore next */
+        if (Object.defineProperty) {
+          Object.defineProperty(this, 'column', {
+            value: column,
+            enumerable: true
+          });
+        } else {
+          this.column = column;
+        }
+      }
+    } catch (nop) {
+      /* Ignore if the browser is very particular */
     }
   }
 
@@ -26718,6 +26725,8 @@ enifed('handlebars/utils', ['exports'], function (exports) {
     '"': '&quot;',
     "'": '&#x27;',
     '`': '&#x60;'
+    // The "equals-sign" is intentionally excluded from this list
+    // due to semantic-versioning issues (see #1489)
   };
 
   var badChars = /[&<>"'`]/g,
@@ -26817,6 +26826,9 @@ enifed('handlebars/utils', ['exports'], function (exports) {
   function appendContextPath(contextPath, id) {
     return (contextPath ? contextPath + '.' : '') + id;
   }
+
+  var dangerousPropertyRegex = /^(constructor|__defineGetter__|__defineSetter__|__lookupGetter__|__proto__)$/;
+  exports.dangerousPropertyRegex = dangerousPropertyRegex;
 });
 
 enifed("simple-html-tokenizer/entity-parser", ["exports"], function (exports) {

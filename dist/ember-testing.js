@@ -6,7 +6,7 @@
  *            Portions Copyright 2008-2011 Apple Inc. All rights reserved.
  * @license   Licensed under MIT license
  *            See https://raw.github.com/emberjs/ember.js/master/LICENSE
- * @version   2.12.2
+ * @version   2.12.2-Ignore-Backtracking-Renderer-2.12.2+8d6b3969
  */
 
 var enifed, requireModule, Ember;
